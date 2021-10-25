@@ -5,3 +5,4 @@ class OysterCard
     @balance = 0
    end
 end 
+
