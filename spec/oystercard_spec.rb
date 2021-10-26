@@ -37,7 +37,12 @@ describe OysterCard do
         subject.touch_out
         expect(subject).not_to be_in_journey
       end
-    
+
+      it "deducted amount from the journey" do
+        subject.touch_in
+        expect{ subject.touch_out }.to change{subject.balance}.by (-OysterCard::MINIMUM_CHARGE)
+      end
+
     describe "minimum amount" do
       it "will not touch in if it's below 1 pound" do 
         minimum_balance = OysterCard::MINIMUM_BALANCE

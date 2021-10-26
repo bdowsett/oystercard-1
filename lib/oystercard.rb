@@ -4,6 +4,8 @@ class OysterCard
    
    MAXIMUM_BALANCE = 90
    MINIMUM_BALANCE = 1
+   MINIMUM_CHARGE = 3
+   
    
    def initialize
     @balance = 0
@@ -28,7 +30,8 @@ class OysterCard
    end
 
    def touch_out
-      @state = false
+      @in_journey = false
+      deduct(MINIMUM_CHARGE)
    end
 
    def minimum_amount
@@ -36,4 +39,3 @@ class OysterCard
       @balance
    end
 end 
-
