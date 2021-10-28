@@ -78,6 +78,10 @@ describe OysterCard do
     end
 
     describe "journeys" do 
+      it "checks that it has empty list of journeys by default" do 
+        expect(subject.journeys).to eq ({})
+      end
+
       it "will record a set of entry and exit stations" do
         subject.top_up(3)
         subject.touch_in(station)
