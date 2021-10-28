@@ -37,14 +37,14 @@ describe OysterCard do
       end
 
       it " returns false if touch_out" do
-        subject.touch_out
+        subject.touch_out(station)
         expect(subject).not_to be_in_journey
       end
 
       it "deducted amount from the journey" do
         subject.top_up(3)
         subject.touch_in(station)
-        expect{ subject.touch_out }.to change{subject.balance}.by (-OysterCard::MINIMUM_CHARGE)
+        expect{ subject.touch_out(station) }.to change{subject.balance}.by (-OysterCard::MINIMUM_CHARGE)
       end
 
     describe "touch_in" do
@@ -60,14 +60,31 @@ describe OysterCard do
         expect(subject.entry_station).to eq(station)
       end 
 
-      it "sets entry_station to nil when card tocuhed out" do
+      it "sets entry_station to nil when card touched out" do
         subject.top_up(3)
         subject.touch_in(station)
-        subject.touch_out
+        subject.touch_out(station)
         expect(subject.entry_station).to eq nil
       end
+    end
 
+    describe "touch_out" do 
+      it "will record exit station when touched out" do 
+        subject.top_up(3)
+        subject.touch_in(station)
+        subject.touch_out(station)
+        expect(subject.exit_station).to eq station
+      end
+    end
+
+    describe "journeys" do 
+      it "will record a set of entry and exit stations" do
+        subject.top_up(3)
+        subject.touch_in(station)
+        subject.touch_out(station)
+        expect(subject.journeys).to eq ({station => station})
     end
   end
+end
 end
 end
