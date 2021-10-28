@@ -22,22 +22,22 @@ class OysterCard
    end 
 
    def in_journey?
-      @state
+      !!entry_station
    end
 
    def touch_in(station)
+      fail "You do not have sufficient #{MINIMUM_BALANCE}" if @balance < MINIMUM_BALANCE
       @entry_station = station
-      @state = true
+     # @state = true
    end
 
    def touch_out
-      @in_journey = false
+     # @state = false
       deduct(MINIMUM_CHARGE)
       @entry_station = nil
    end
 
    def minimum_amount
-    fail "You do not have sufficient #{MINIMUM_BALANCE}" if @balance < MINIMUM_BALANCE
       @balance
    end
 end 

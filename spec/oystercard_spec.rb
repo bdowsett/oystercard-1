@@ -1,7 +1,7 @@
 require 'oystercard'
 
 describe OysterCard do
-  let(:station) {double("station")}
+  let(:station) { double :station }
 
     it "initializes with a zero balance" do 
      expect(subject.balance).to eq(0)
@@ -31,6 +31,7 @@ describe OysterCard do
       end
 
       it "can touch in" do
+        subject.top_up(3)
         subject.touch_in(station)
         expect(subject).to be_in_journey
       end
@@ -41,28 +42,30 @@ describe OysterCard do
       end
 
       it "deducted amount from the journey" do
+        subject.top_up(3)
         subject.touch_in(station)
         expect{ subject.touch_out }.to change{subject.balance}.by (-OysterCard::MINIMUM_CHARGE)
       end
 
-    describe "minimum amount" do
+    describe "touch_in" do
       it "will not touch in if it's below 1 pound" do 
         minimum_balance = OysterCard::MINIMUM_BALANCE
-        expect {subject.minimum_amount}.to raise_error "You do not have sufficient #{minimum_balance}"
+        expect {subject.touch_in(station)}.to raise_error "You do not have sufficient #{minimum_balance}"
       end 
 
      
       it "stores entry-station when card is touched in" do 
-
+        subject.top_up(3)
         subject.touch_in(station)
         expect(subject.entry_station).to eq(station)
       end 
+
       it "sets entry_station to nil when card tocuhed out" do
+        subject.top_up(3)
         subject.touch_in(station)
         subject.touch_out
         expect(subject.entry_station).to eq nil
       end
-
 
     end
   end
